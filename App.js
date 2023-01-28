@@ -14,6 +14,10 @@ import OrderScreen from './src/screens/OrderScreen/OrderScreen';
 import OrderDetails from './src/screens/OrderScreen/OrderDetails';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store/store';
+import Try from './src/screens/Try';
+import ChangePassword from './src/screens/ChangePassword/ChangePassword';
+import ChooseLocation from './src/components/ChooseLocation';
+import LocationScreen from './src/screens/LocationScreen/LocationScreen';
 
 
 function DetailsScreen() {
@@ -63,6 +67,10 @@ const StackTab = ()=>{
       <Stack.Screen name="Home" component={TabScreen} options={{headerShown: false }}/>
       <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} />
+      <Stack.Screen name="try" component={Try} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="chooseLocation" component={ChooseLocation} />
+      <Stack.Screen name="Location Screen" component={LocationScreen} />
     </Stack.Navigator>
   )
 }

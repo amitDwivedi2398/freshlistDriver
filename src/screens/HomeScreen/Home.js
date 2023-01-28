@@ -6,15 +6,23 @@ import LocationButton from '../../components/LocationButton';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import axiosRequest from '../../axios';
+import Geolocation from '@react-native-community/geolocation';
 
 
 const Home = ({ navigation }) => {
+    Geolocation.getCurrentPosition(data => console.log(data.coords.latitude));
+    console.log(Geolocation);
+    const [assignedList, setAssignedList] = useState([]);
     const isFocused = useIsFocused();
     useEffect(() => {
         getData();
       }, [isFocused])
+      useEffect(() => {
+        getLoginData();
+      }, [isFocused])
     const user= useSelector(state=>state.users)
-    console.log('user',user)
+    console.log('user <<<<<<<<<<<<',user)
     const [data, setData] = useState([
         {
             id: '1',
@@ -60,10 +68,24 @@ const Home = ({ navigation }) => {
 
     ]);
  
+    const getLoginData = async () => {
+        try {
+            let result = await axiosRequest.get('/admin/assinged_product_list/63d3686cefb3c008d02a8101');
+            // console.log(result.data.data.length>0);
+            if (result?.status === 200 && result?.data?.data?.length>0) {
+                let response = await result.data.data;
+                setAssignedList(response);
+                console.log('assigned list =>>>>>>>>>>.', response)
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     const getData = async () => {
         const data = JSON.parse(await AsyncStorage.getItem('userData'));
-        console.log('userData', data);
+        console.log('userData??????', data.user._id);
     };
     return (
         <LinearGradient
@@ -73,8 +95,8 @@ const Home = ({ navigation }) => {
             style={styles.container}>
             <ScrollView style={{}}>
                 <View>
-                    {data?.map((item) => (
-                        <TouchableOpacity>
+                    {assignedList?.map((item) => (
+                        <TouchableOpacity onPress={()=>navigation.navigate('OrderDetails')} key={item?._id}>
                             <LinearGradient
                                 colors={['#ffffcc', '#ccffff', '#ffffcc']} style={styles.mainContainer} >
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
@@ -85,13 +107,13 @@ const Home = ({ navigation }) => {
                                     }} />
 
                                     <View style={{ marginLeft: 10 }}>
-                                        <Text style={styles.title}>{item.title}</Text>
-                                        <Text style={[styles.title, { fontWeight: '400' }]}>{item.product}</Text>
+                                        <Text style={styles.title}>{item.orderId}</Text>
+                                        <Text style={[styles.title, { fontWeight: '400' }]}>{item.product.product_name}</Text>
                                         <Text style={[styles.title, { fontWeight: '400' }]}>{item.date}</Text>
                                     </View>
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-                                    <Text style={[styles.title]}>{item.price}</Text>
+                                    <Text style={[styles.title]}>{item.product.buying_price}</Text>
                                     <Text style={[styles.title, { color: '#767676' }]}>{item.status}</Text>
                                 </View>
                             </LinearGradient>

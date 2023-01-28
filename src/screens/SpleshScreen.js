@@ -1,26 +1,50 @@
-import React from 'react'
-import { SafeAreaView, View, Text, TouchableOpacity,Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-
-const SpleshScreen = ({navigation}) => {
+const SplashScreen = ({navigation}) => {
   setTimeout(async () => {
+    const value = await AsyncStorage.getItem('userData');
+    if (value !== null) {
+      navigation.replace('Home');
+    } else {
       navigation.replace('Login');
+    }
   }, 1000);
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
       }}>
-      <View style={{marginTop: 20}}>
-      </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Image style={{width:300,height:250}} source={require('../assets/images/delevryBoy.png')} />
-      </View>
+      <LinearGradient
+        start={{x: 1, y: 0}}
+        end={{x: 0, y: 1}}
+        colors={['#ffffcc', '#ccffff', '#ffffcc']}
+        style={styles.mainGradient}>
+        <Image
+          style={{width: 250, height: 150, resizeMode: 'contain'}}
+          source={require('../assets/images/logo.png')}
+        />
+      </LinearGradient>
     </SafeAreaView>
   );
 };
 
-export default SpleshScreen;
+export default SplashScreen;
+
+const styles = StyleSheet.create({
+  mainGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

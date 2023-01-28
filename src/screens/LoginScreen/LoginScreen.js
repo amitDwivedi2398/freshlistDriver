@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
     const getData = async () => {
         const data = JSON.parse(await AsyncStorage.getItem('userData'));
         dispatch(sendLogin(data))
-        console.log('userData', data);
+        console.log('userData<<<<<', data);
     };
     const getLoginData = async () => {
         const body = {
@@ -57,7 +57,9 @@ const LoginScreen = ({ navigation }) => {
             colors={['#ffffcc', '#ccffff', '#ffffcc']}
             style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
-                <Image source={require('../../assets/images/delevryBoy.png')} style={{ width: '100%', height: 200 }} />
+            <View style={{height:200,justifyContent:'center'}}>
+            <Image source={require('../../assets/images/logo.png')} style={{alignSelf:'center' }} />
+            </View>
                 <View>
                     <View style={styles.mainContainer} >
                         <Text style={styles.welcomeTitle} >Welcome Back</Text>
